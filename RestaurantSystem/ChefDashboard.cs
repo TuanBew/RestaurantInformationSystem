@@ -27,7 +27,7 @@ namespace RestaurantSystem
 
         private void LoadTableButtons()
         {
-            flpTableButtons.Controls.Clear(); // Clear any existing buttons
+            flpTables.Controls.Clear(); // Clear any existing buttons
             using (SqlConnection con = new SqlConnection(connectionString))
             {
                 string query = "SELECT TableNumber, Status FROM Tables";
@@ -47,7 +47,7 @@ namespace RestaurantSystem
                         ForeColor = Color.White
                     };
 
-                    flpTableButtons.Controls.Add(btnTable); // Add the button to the FlowLayoutPanel
+                    flpTables.Controls.Add(btnTable); // Add the button to the FlowLayoutPanel
                 }
                 con.Close();
             }
