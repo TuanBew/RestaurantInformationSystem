@@ -52,7 +52,7 @@ namespace RestaurantSystem
                 con.Close();
             }
         }
-
+        
         private void LoadDynamicContent(UserControl control)
         {
             pnlMainContent.Controls.Clear(); // Clear existing controls
@@ -68,7 +68,7 @@ namespace RestaurantSystem
 
         private void btnInventory_Click(object sender, EventArgs e)
         {
-            var inventoryControl = new InventoryControl();
+            var inventoryControl = new InventoryManagementControl();
             LoadDynamicContent(inventoryControl);
         }
 

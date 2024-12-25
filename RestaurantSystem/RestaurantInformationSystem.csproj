@@ -76,6 +76,12 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="ImportHistoryControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ImportHistoryControl.Designer.cs">
+      <DependentUpon>ImportHistoryControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="InventoryManagementControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -123,11 +129,17 @@
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ImportHistoryControl.resx">
+      <DependentUpon>ImportHistoryControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="InventoryManagementControl.resx">
       <DependentUpon>InventoryManagementControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="LoginForm.resx">
       <DependentUpon>LoginForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ManagerDashboard.resx">
+      <DependentUpon>ManagerDashboard.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="OrderManagementControl.resx">
       <DependentUpon>OrderManagementControl.cs</DependentUpon>

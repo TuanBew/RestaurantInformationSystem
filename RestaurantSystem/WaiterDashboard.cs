@@ -129,6 +129,15 @@ namespace RestaurantSystem
 
         }
 
+        private void pnlSideBar_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void flpTables_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
     }
 }
 

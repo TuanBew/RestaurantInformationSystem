@@ -10,21 +10,11 @@ using System.Windows.Forms;
 
 namespace RestaurantSystem
 {
-    public partial class ManagerDashboard : Form
+    public partial class ImportHistoryControl : UserControl
     {
-        public ManagerDashboard()
+        public ImportHistoryControl()
         {
             InitializeComponent();
-        }
-
-        private void btnOrder_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-
         }
     }
 }
