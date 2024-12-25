@@ -22,36 +22,10 @@ namespace RestaurantSystem
 
         private void ChefDashboard_Load(object sender, EventArgs e)
         {
-            LoadTableButtons();
+           
         }
 
-        private void LoadTableButtons()
-        {
-            flpTables.Controls.Clear(); // Clear any existing buttons
-            using (SqlConnection con = new SqlConnection(connectionString))
-            {
-                string query = "SELECT TableNumber, Status FROM Tables";
-                SqlCommand cmd = new SqlCommand(query, con);
-                con.Open();
-                SqlDataReader reader = cmd.ExecuteReader();
-
-                while (reader.Read())
-                {
-                    // Create a button for each table
-                    Button btnTable = new Button
-                    {
-                        Text = $"{reader["TableNumber"]}\n{reader["Status"]}",
-                        Width = 120,
-                        Height = 120,
-                        BackColor = reader["Status"].ToString() == "Trống" ? Color.LightGray : Color.DarkGreen,
-                        ForeColor = Color.White
-                    };
-
-                    flpTables.Controls.Add(btnTable); // Add the button to the FlowLayoutPanel
-                }
-                con.Close();
-            }
-        }
+        
         
         private void LoadDynamicContent(UserControl control)
         {
@@ -80,7 +54,7 @@ namespace RestaurantSystem
 
         private void btnLogout_Click(object sender, EventArgs e)
         {
-
+            Application.Exit(); // Exit the application
         }
     }
 }
