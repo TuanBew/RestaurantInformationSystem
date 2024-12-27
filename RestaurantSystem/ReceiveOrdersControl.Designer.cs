@@ -59,7 +59,7 @@
             this.grpOrderDetails.Size = new System.Drawing.Size(552, 740);
             this.grpOrderDetails.TabIndex = 0;
             this.grpOrderDetails.TabStop = false;
-            this.grpOrderDetails.Text = "groupBox1";
+            this.grpOrderDetails.Text = "Orders Detail";
             this.grpOrderDetails.Enter += new System.EventHandler(this.grpOrderDetails_Enter);
             // 
             // dgvOrderDetails
