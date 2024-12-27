@@ -88,8 +88,7 @@ namespace RestaurantSystem
                 INNER JOIN 
                     Menu m ON od.MenuItemID = m.MenuItemID
                 WHERE 
-                    b.TableID = @TableID AND b.BookingID = o.BookingID
-                ";
+                    b.TableID = @TableID AND b.Status = 'Active' AND b.BookingID = o.BookingID";
 
                     SqlCommand cmd = new SqlCommand(query, con);
                     cmd.Parameters.AddWithValue("@TableID", tableID);
@@ -121,6 +120,7 @@ namespace RestaurantSystem
                 MessageBox.Show($"Error fetching table data: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
 
         private decimal CalculateTotal(DataTable dataTable)
         {

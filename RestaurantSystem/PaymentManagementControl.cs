@@ -55,29 +55,28 @@ namespace RestaurantSystem
                     using (SqlConnection con = new SqlConnection(connectionString))
                     {
                         string query = @"
-                            SELECT 
-                                b.BookingID,
-                                b.CustomerName,
-                                b.ContactNumber,
-                                b.Notes,
-                                b.BookingTime,
-                                o.OrderID,
-                                m.Name AS DishName,
-                                m.Category,
-                                od.Quantity,
-                                od.Price,
-                                o.OrderStatus
-                            FROM 
-                                Bookings b
-                            LEFT JOIN 
-                                Orders o ON b.BookingID = o.BookingID
-                            LEFT JOIN 
-                                OrderDetails od ON o.OrderID = od.OrderID
-                            LEFT JOIN 
-                                Menu m ON od.MenuItemID = m.MenuItemID
-                            WHERE 
-                                b.TableID = @TableID AND b.Status = 'Active';
-                        ";
+    SELECT 
+        b.BookingID,
+        b.CustomerName,
+        b.ContactNumber,
+        b.Notes,
+        b.BookingTime,
+        o.OrderID,
+        m.Name AS DishName,
+        m.Category,
+        od.Quantity,
+        od.Price,
+        o.OrderStatus
+    FROM 
+        Bookings b
+    LEFT JOIN 
+        Orders o ON b.BookingID = o.BookingID
+    LEFT JOIN 
+        OrderDetails od ON o.OrderID = od.OrderID
+    LEFT JOIN 
+        Menu m ON od.MenuItemID = m.MenuItemID
+    WHERE 
+        b.TableID = @TableID AND b.Status = 'Active';";
                         SqlCommand cmd = new SqlCommand(query, con);
                         cmd.Parameters.AddWithValue("@TableID", TableID);
                         cmd.Parameters.AddWithValue("@BookingID", BookingData.Rows[0]["BookingID"]);
