@@ -24,64 +24,117 @@ namespace RestaurantSystem
 
         private void LoadTables()
         {
-            flpTables.Controls.Clear(); // Clear any existing buttons
+            flpTables.Controls.Clear();
+
             using (SqlConnection con = new SqlConnection(connectionString))
             {
-                string query = "SELECT TableNumber, Status FROM Tables";
+                string query = @"
+            SELECT t.TableID, t.TableNumber, 
+                   CASE 
+                       WHEN EXISTS (SELECT 1 FROM Orders WHERE TableID = t.TableID AND Status = 'Active') THEN 'Have order'
+                       ELSE t.Status
+                   END AS TableStatus
+            FROM Tables t";
+
                 SqlCommand cmd = new SqlCommand(query, con);
+
                 con.Open();
                 SqlDataReader reader = cmd.ExecuteReader();
 
                 while (reader.Read())
                 {
-                    // Create a button for each table
+                    string tableID = reader["TableID"].ToString();
+                    string tableNumber = reader["TableNumber"].ToString();
+                    string status = reader["TableStatus"].ToString().Trim();
+
                     Button btnTable = new Button
                     {
-                        Text = $"{reader["TableNumber"]}\n{reader["Status"]}",
-                        Width = 120,
-                        Height = 120,
-                        BackColor = reader["Status"].ToString() == "Clear" ? Color.LightGray : Color.DarkGreen,
-                        ForeColor = Color.White
+                        Text = $"{tableNumber}\n{status}",
+                        Width = 100,  // Button width
+                        Height = 100, // Button height
+                        BackColor = GetTableColor(status),
+                        Tag = new { TableID = tableID, TableNumber = tableNumber } // Store table data in Tag
                     };
 
-                    flpTables.Controls.Add(btnTable); // Add the button to the FlowLayoutPanel
+                    btnTable.Click += (s, e) =>
+                    {
+                        // Extract the data from the button's Tag property
+                        var tagData = (dynamic)((Button)s).Tag;
+                        string clickedTableNumber = tagData.TableNumber;
+                        string clickedTableID = tagData.TableID;
+
+                        // Update the text box with the table number
+                        txtTableNumber.Text = clickedTableNumber;
+
+                        // Load order details for the clicked table
+                        LoadOrderDetails(clickedTableID);
+                    };
+
+                    flpTables.Controls.Add(btnTable);
                 }
+
                 con.Close();
             }
         }
 
-        private void LoadOrderDetails(string tableNumber)
+
+        private FlowLayoutPanel CreateNewRow()
+        {
+            return new FlowLayoutPanel
+            {
+                FlowDirection = FlowDirection.LeftToRight,
+                WrapContents = false,   // Force buttons to stay in a single row
+                AutoSize = true,        // Adjust size to fit buttons
+                Height = 110,           // Fixed height for each row
+                Width = flpTables.Width // Match parent panel width
+            };
+        }
+
+
+
+        private Color GetTableColor(string status)
+        {
+            switch (status)
+            {
+                case "Occupied":
+                    return Color.LightGreen;  // Green for tables with orders
+                case "Empty":
+                    return Color.LightGray;  // Gray for empty tables
+                default:
+                    return Color.LightGray;  // Default color
+            }
+        }
+
+
+
+        private void LoadOrderDetails(string tableID)
         {
             dgvOrderDetails.Rows.Clear();
 
-            try
+            using (SqlConnection con = new SqlConnection(connectionString))
             {
-                using (SqlConnection con = new SqlConnection(connectionString))
+                string query = @"
+            SELECT m.Name AS ItemName, od.Quantity, od.Price
+            FROM OrderDetails od
+            INNER JOIN Menu m ON od.MenuItemID = m.MenuItemID
+            WHERE od.OrderID IN 
+                (SELECT OrderID FROM Orders WHERE TableID = @TableID)";
+
+                SqlCommand cmd = new SqlCommand(query, con);
+                cmd.Parameters.AddWithValue("@TableID", tableID);
+
+                con.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
                 {
-                    string query = @"
-                SELECT M.Name AS DishName, OD.Quantity
-                FROM Orders O
-                INNER JOIN OrderDetails OD ON O.OrderID = OD.OrderID
-                INNER JOIN Menu M ON OD.MenuItemID = M.MenuItemID
-                INNER JOIN Tables T ON O.TableID = T.TableID
-                WHERE T.TableNumber = @TableNumber";
-
-                    SqlCommand cmd = new SqlCommand(query, con);
-                    cmd.Parameters.AddWithValue("@TableNumber", tableNumber);
-                    con.Open();
-                    SqlDataReader reader = cmd.ExecuteReader();
-
-                    while (reader.Read())
-                    {
-                        dgvOrderDetails.Rows.Add(reader["DishName"], reader["Quantity"]);
-                    }
+                    dgvOrderDetails.Rows.Add(reader["ItemName"], reader["Quantity"], reader["Price"]);
                 }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error loading order details: {ex.Message}");
+
+                con.Close();
             }
         }
+
 
 
         private void grpOrderDetails_Enter(object sender, EventArgs e)
