@@ -28,66 +28,53 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
-            this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.dgvImportHistory = new System.Windows.Forms.DataGridView();
+            this.dtpStartDate = new System.Windows.Forms.DateTimePicker();
+            this.dtpEndDate = new System.Windows.Forms.DateTimePicker();
+            this.txtTotalRevenue = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.DateOfImport = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TotalCost = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.btnConfirmDateSelection = new System.Windows.Forms.Button();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvImportHistory)).BeginInit();
             this.SuspendLayout();
             // 
-            // dataGridView1
+            // dgvImportHistory
             // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Column1,
-            this.Column2});
-            this.dataGridView1.Location = new System.Drawing.Point(31, 24);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.RowHeadersWidth = 51;
-            this.dataGridView1.RowTemplate.Height = 24;
-            this.dataGridView1.Size = new System.Drawing.Size(416, 233);
-            this.dataGridView1.TabIndex = 0;
+            this.dgvImportHistory.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvImportHistory.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.DateOfImport,
+            this.TotalCost});
+            this.dgvImportHistory.Location = new System.Drawing.Point(31, 24);
+            this.dgvImportHistory.Name = "dgvImportHistory";
+            this.dgvImportHistory.RowHeadersWidth = 51;
+            this.dgvImportHistory.RowTemplate.Height = 24;
+            this.dgvImportHistory.Size = new System.Drawing.Size(387, 233);
+            this.dgvImportHistory.TabIndex = 0;
             // 
-            // Column1
+            // dtpStartDate
             // 
-            this.Column1.HeaderText = "Date of Import";
-            this.Column1.MinimumWidth = 6;
-            this.Column1.Name = "Column1";
-            this.Column1.Width = 125;
+            this.dtpStartDate.Location = new System.Drawing.Point(666, 56);
+            this.dtpStartDate.Name = "dtpStartDate";
+            this.dtpStartDate.Size = new System.Drawing.Size(200, 22);
+            this.dtpStartDate.TabIndex = 1;
             // 
-            // Column2
+            // dtpEndDate
             // 
-            this.Column2.HeaderText = "Total Cost";
-            this.Column2.MinimumWidth = 6;
-            this.Column2.Name = "Column2";
-            this.Column2.Width = 125;
+            this.dtpEndDate.Location = new System.Drawing.Point(666, 130);
+            this.dtpEndDate.Name = "dtpEndDate";
+            this.dtpEndDate.Size = new System.Drawing.Size(200, 22);
+            this.dtpEndDate.TabIndex = 2;
             // 
-            // dateTimePicker1
+            // txtTotalRevenue
             // 
-            this.dateTimePicker1.Location = new System.Drawing.Point(666, 56);
-            this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(200, 22);
-            this.dateTimePicker1.TabIndex = 1;
-            // 
-            // dateTimePicker2
-            // 
-            this.dateTimePicker2.Location = new System.Drawing.Point(666, 130);
-            this.dateTimePicker2.Name = "dateTimePicker2";
-            this.dateTimePicker2.Size = new System.Drawing.Size(200, 22);
-            this.dateTimePicker2.TabIndex = 2;
-            // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(666, 199);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.ReadOnly = true;
-            this.textBox1.Size = new System.Drawing.Size(200, 22);
-            this.textBox1.TabIndex = 3;
+            this.txtTotalRevenue.Location = new System.Drawing.Point(666, 199);
+            this.txtTotalRevenue.Name = "txtTotalRevenue";
+            this.txtTotalRevenue.ReadOnly = true;
+            this.txtTotalRevenue.Size = new System.Drawing.Size(200, 22);
+            this.txtTotalRevenue.TabIndex = 3;
             // 
             // label1
             // 
@@ -114,23 +101,51 @@
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(96, 16);
             this.label3.TabIndex = 6;
-            this.label3.Text = "Total Revanue";
+            this.label3.Text = "Total Revenue";
+            // 
+            // DateOfImport
+            // 
+            this.DateOfImport.DataPropertyName = "DateOfImport";
+            this.DateOfImport.HeaderText = "Date of Import";
+            this.DateOfImport.MinimumWidth = 6;
+            this.DateOfImport.Name = "DateOfImport";
+            this.DateOfImport.Width = 125;
+            // 
+            // TotalCost
+            // 
+            this.TotalCost.DataPropertyName = "TotalCost";
+            this.TotalCost.HeaderText = "Total Cost";
+            this.TotalCost.MinimumWidth = 6;
+            this.TotalCost.Name = "TotalCost";
+            this.TotalCost.Width = 125;
+            // 
+            // btnConfirmDateSelection
+            // 
+            this.btnConfirmDateSelection.Location = new System.Drawing.Point(608, 256);
+            this.btnConfirmDateSelection.Name = "btnConfirmDateSelection";
+            this.btnConfirmDateSelection.Size = new System.Drawing.Size(116, 49);
+            this.btnConfirmDateSelection.TabIndex = 7;
+            this.btnConfirmDateSelection.Text = "Confirm Date";
+            this.btnConfirmDateSelection.UseVisualStyleBackColor = true;
+            this.btnConfirmDateSelection.Click += new System.EventHandler(this.btnConfirmDateSelection_Click);
             // 
             // ImportHistoryControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.btnConfirmDateSelection);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.textBox1);
-            this.Controls.Add(this.dateTimePicker2);
-            this.Controls.Add(this.dateTimePicker1);
-            this.Controls.Add(this.dataGridView1);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Controls.Add(this.txtTotalRevenue);
+            this.Controls.Add(this.dtpEndDate);
+            this.Controls.Add(this.dtpStartDate);
+            this.Controls.Add(this.dgvImportHistory);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "ImportHistoryControl";
             this.Size = new System.Drawing.Size(964, 342);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            this.Load += new System.EventHandler(this.ImportHistoryControl_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvImportHistory)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -138,14 +153,15 @@
 
         #endregion
 
-        private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
-        private System.Windows.Forms.DateTimePicker dateTimePicker1;
-        private System.Windows.Forms.DateTimePicker dateTimePicker2;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.DataGridView dgvImportHistory;
+        private System.Windows.Forms.DateTimePicker dtpStartDate;
+        private System.Windows.Forms.DateTimePicker dtpEndDate;
+        private System.Windows.Forms.TextBox txtTotalRevenue;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.DataGridViewTextBoxColumn DateOfImport;
+        private System.Windows.Forms.DataGridViewTextBoxColumn TotalCost;
+        private System.Windows.Forms.Button btnConfirmDateSelection;
     }
 }

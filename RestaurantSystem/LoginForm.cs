@@ -64,13 +64,7 @@ namespace RestaurantSystem
                                 break;
                             case "Manager":
                                 new ManagerDashboard().Show();
-                                break;
-                            case "Accountant":
-                                new AccountantDashboard().Show();
-                                break;
-                            case "Admin":
-                                new AdminDashboard().Show();
-                                break;
+                                break;           
                             default:
                                 MessageBox.Show("Unknown role!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                 break;

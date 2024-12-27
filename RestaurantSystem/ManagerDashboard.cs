@@ -235,5 +235,10 @@ namespace RestaurantSystem
         {
             ResetRightPanel(); // Clear right panel
         }
+
+        private void btnLogout_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
     }
 }

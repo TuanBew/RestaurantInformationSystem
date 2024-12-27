@@ -17,6 +17,8 @@ namespace RestaurantSystem
         private void InventoryManagementControl_Load(object sender, EventArgs e)
         {
             LoadInventory();
+            LoadItemsIntoComboBox();
+            LoadItemsIntoUpdateComboBox();
         }
 
         // Load Inventory Data into Main DataGridView
@@ -52,6 +54,68 @@ namespace RestaurantSystem
             }
         }
 
+        private void LoadItemsIntoComboBox()
+        {
+            cmbItem.Items.Clear(); // Clear existing items to avoid duplication
+
+            try
+            {
+                using (SqlConnection con = new SqlConnection(connectionString))
+                {
+                    string query = "SELECT Name FROM Inventory";
+                    SqlCommand cmd = new SqlCommand(query, con);
+
+                    con.Open();
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        cmbItem.Items.Add(reader["Name"].ToString());
+                    }
+
+                    reader.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error loading items: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void LoadItemsIntoUpdateComboBox()
+        {
+            try
+            {
+                cmbItemToUpdate.Items.Clear(); // Clear existing items to avoid duplication
+
+                using (SqlConnection con = new SqlConnection(connectionString))
+                {
+                    string query = "SELECT Name FROM Inventory";
+                    SqlCommand cmd = new SqlCommand(query, con);
+
+                    con.Open();
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        cmbItemToUpdate.Items.Add(reader["Name"].ToString()); // Add each item name to the ComboBox
+                    }
+
+                    reader.Close();
+                }
+
+                if (cmbItemToUpdate.Items.Count > 0)
+                {
+                    cmbItemToUpdate.SelectedIndex = 0; // Automatically select the first item
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error loading items: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+
         // Add Items to Temporary List
         private void btnAddToList_Click(object sender, EventArgs e)
         {
@@ -61,13 +125,15 @@ namespace RestaurantSystem
 
             if (string.IsNullOrEmpty(itemName) || quantity <= 0)
             {
-                MessageBox.Show("Please select an item and enter a valid quantity.");
+                MessageBox.Show("Please select an item and enter a valid quantity.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
             try
             {
                 decimal unitPrice = 0;
+
+                // Get the UnitPrice from the database
                 using (SqlConnection con = new SqlConnection(connectionString))
                 {
                     string query = "SELECT UnitPrice FROM Inventory WHERE Name = @Name";
@@ -75,61 +141,75 @@ namespace RestaurantSystem
                     cmd.Parameters.AddWithValue("@Name", itemName);
 
                     con.Open();
-                    unitPrice = Convert.ToDecimal(cmd.ExecuteScalar());
+                    object result = cmd.ExecuteScalar();
+                    if (result == null)
+                    {
+                        MessageBox.Show($"Item '{itemName}' does not exist in the inventory.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+                    unitPrice = Convert.ToDecimal(result);
                 }
 
-                // Check if the item already exists in the temporary list
+                // Check if the item already exists in dgvAddedInventory
                 foreach (DataGridViewRow row in dgvAddedInventory.Rows)
                 {
-                    if (row.Cells["Item Name"].Value != null && row.Cells["Item Name"].Value.ToString() == itemName)
+                    if (row.Cells["Column6"].Value != null && row.Cells["Column6"].Value.ToString() == itemName)
                     {
-                        int existingQuantity = int.Parse(row.Cells["Quantity"].Value.ToString());
-                        row.Cells["Quantity"].Value = existingQuantity + quantity;
-                        row.Cells["TotalPrice"].Value = (unitPrice * (existingQuantity + quantity)).ToString("C");
-                        UpdateTotalPrice();
+                        int existingQuantity = int.Parse(row.Cells["Column7"].Value.ToString());
+                        row.Cells["Column7"].Value = existingQuantity + quantity; // Update quantity
+                        row.Cells["Column10"].Value = (unitPrice * (existingQuantity + quantity)).ToString("C"); // Update total price
+                        UpdateTotalPrice(); // Update the total price in the form
                         return;
                     }
                 }
 
-                // Add row to dgvAddedInventory
+                // Add new row to dgvAddedInventory
                 decimal totalPrice = unitPrice * quantity;
-                dgvAddedInventory.Rows.Add(itemName, quantity, expiryDate.ToString("dd/MM/yyyy"), unitPrice.ToString("C"), totalPrice.ToString("C"));
 
-                // Update total price and clear fields
+                // Ensure the values are in the correct order:
+                dgvAddedInventory.Rows.Add(
+                    itemName,                             // Column6: Item Name
+                    quantity,                             // Column7: Quantity
+                    unitPrice.ToString("C"),              // Column8: Unit Price
+                    expiryDate.ToString("dd/MM/yyyy"),    // Column9: Expiry Date
+                    totalPrice.ToString("C")              // Column10: Total Price
+                );
+
+                // Update total price
                 UpdateTotalPrice();
-                cmbItem.SelectedIndex = -1;
-                nudQuantity.Value = 0;
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error adding item: {ex.Message}");
+                MessageBox.Show($"Error adding item: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+
+
 
         // Update Total Price in TextBox
         private void UpdateTotalPrice()
         {
-            decimal total = 0;
+            decimal totalPrice = 0;
 
             foreach (DataGridViewRow row in dgvAddedInventory.Rows)
             {
-                if (row.Cells["TotalPrice"].Value != null)
+                if (row.Cells["Column10"].Value != null)
                 {
-                    string totalPriceStr = row.Cells["TotalPrice"].Value.ToString();
-                    decimal rowTotal = decimal.Parse(totalPriceStr, NumberStyles.Currency);
-                    total += rowTotal;
+                    totalPrice += decimal.Parse(row.Cells["Column10"].Value.ToString(), System.Globalization.NumberStyles.Currency);
                 }
             }
 
-            txtTotalPrice.Text = total.ToString("C"); // Display in currency format
+            txtTotalPrice.Text = totalPrice.ToString("C"); // Update the total price textbox
         }
+
 
         // Confirm Import to Database
         private void btnConfirmImport_Click(object sender, EventArgs e)
         {
             if (dgvAddedInventory.Rows.Count == 0)
             {
-                MessageBox.Show("No items to confirm.");
+                MessageBox.Show("No items to confirm.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -140,16 +220,32 @@ namespace RestaurantSystem
                     con.Open();
                     SqlTransaction transaction = con.BeginTransaction();
 
+                    decimal totalCost = 0;
+
+                    // Loop through the DataGridView rows and update the Inventory table
                     foreach (DataGridViewRow row in dgvAddedInventory.Rows)
                     {
-                        if (row.Cells["Item Name"].Value != null)
-                        {
-                            string itemName = row.Cells["Item Name"].Value.ToString();
-                            int quantity = int.Parse(row.Cells["Quantity"].Value.ToString());
-                            decimal totalPrice = decimal.Parse(row.Cells["TotalPrice"].Value.ToString(), NumberStyles.Currency);
-                            DateTime expiryDate = DateTime.Parse(row.Cells["ExpiryDate"].Value.ToString());
+                        if (row.Cells["Column6"].Value == null) continue;
 
-                            // Update Inventory Table
+                        string itemName = row.Cells["Column6"].Value.ToString(); // Column6: Item Name
+                        int quantity = int.Parse(row.Cells["Column7"].Value.ToString()); // Column7: Quantity
+                        decimal unitPrice = decimal.Parse(row.Cells["Column8"].Value.ToString(), System.Globalization.NumberStyles.Currency); // Column8: Unit Price
+                        DateTime expiryDate = DateTime.Parse(row.Cells["Column9"].Value.ToString()); // Column9: Expiry Date
+
+                        // Calculate the total cost for the current row
+                        decimal rowTotalCost = quantity * unitPrice;
+                        totalCost += rowTotalCost;
+
+                        // Check if the item already exists in the Inventory table
+                        string checkQuery = "SELECT COUNT(*) FROM Inventory WHERE Name = @Name";
+                        SqlCommand checkCmd = new SqlCommand(checkQuery, con, transaction);
+                        checkCmd.Parameters.AddWithValue("@Name", itemName);
+
+                        int itemCount = (int)checkCmd.ExecuteScalar();
+
+                        if (itemCount > 0)
+                        {
+                            // Update the existing item
                             string updateQuery = "UPDATE Inventory SET Quantity = Quantity + @Quantity, ExpiryDate = @ExpiryDate WHERE Name = @Name";
                             SqlCommand updateCmd = new SqlCommand(updateQuery, con, transaction);
                             updateCmd.Parameters.AddWithValue("@Name", itemName);
@@ -157,32 +253,52 @@ namespace RestaurantSystem
                             updateCmd.Parameters.AddWithValue("@ExpiryDate", expiryDate);
 
                             updateCmd.ExecuteNonQuery();
-
-                            // Insert into InventoryTransactions
-                            string insertQuery = "INSERT INTO InventoryTransactions (InventoryID, Quantity, TotalPrice, TransactionType, TransactionDate) " +
-                                                 "VALUES ((SELECT InventoryID FROM Inventory WHERE Name = @Name), @Quantity, @TotalPrice, 'Add', GETDATE())";
+                        }
+                        else
+                        {
+                            // Insert a new item
+                            string insertQuery = @"
+                        INSERT INTO Inventory (Name, Quantity, UnitPrice, Unit, ExpiryDate) 
+                        VALUES (@Name, @Quantity, @UnitPrice, 'Unit', @ExpiryDate)";
                             SqlCommand insertCmd = new SqlCommand(insertQuery, con, transaction);
                             insertCmd.Parameters.AddWithValue("@Name", itemName);
                             insertCmd.Parameters.AddWithValue("@Quantity", quantity);
-                            insertCmd.Parameters.AddWithValue("@TotalPrice", totalPrice);
+                            insertCmd.Parameters.AddWithValue("@UnitPrice", unitPrice);
+                            insertCmd.Parameters.AddWithValue("@ExpiryDate", expiryDate);
 
                             insertCmd.ExecuteNonQuery();
                         }
                     }
 
+                    // Insert the total cost and date of the import into the ImportHistory table
+                    string historyQuery = "INSERT INTO ImportHistory (DateOfImport, TotalCost) VALUES (@DateOfImport, @TotalCost)";
+                    SqlCommand historyCmd = new SqlCommand(historyQuery, con, transaction);
+                    historyCmd.Parameters.AddWithValue("@DateOfImport", DateTime.Now);
+                    historyCmd.Parameters.AddWithValue("@TotalCost", totalCost);
+
+                    historyCmd.ExecuteNonQuery();
+
+                    // Commit the transaction
                     transaction.Commit();
                 }
 
-                MessageBox.Show("Inventory updated successfully.");
+                MessageBox.Show("Inventory updated successfully and import record added.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                // Clear the DataGridView and reset total cost
                 dgvAddedInventory.Rows.Clear();
-                txtTotalPrice.Text = "$0.00"; // Reset total price
-                LoadInventory(); // Refresh main inventory table
+                txtTotalPrice.Text = "$0.00";
+
+                // Reload the inventory list
+                LoadInventory();
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error confirming import: {ex.Message}");
+                MessageBox.Show($"Error confirming import: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+
+
 
         // Update Usage Data
         private void btnUpdateUsage_Click(object sender, EventArgs e)

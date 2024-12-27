@@ -29,6 +29,11 @@
         private void InitializeComponent()
         {
             this.dgvInventory = new System.Windows.Forms.DataGridView();
+            this.ItemName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Quantity = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.UnitPrice = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Unit = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ExpiryDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.cmbItem = new System.Windows.Forms.ComboBox();
             this.nudQuantity = new System.Windows.Forms.NumericUpDown();
             this.dtpExpiryDate = new System.Windows.Forms.DateTimePicker();
@@ -37,25 +42,20 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.dgvAddedInventory = new System.Windows.Forms.DataGridView();
+            this.label4 = new System.Windows.Forms.Label();
+            this.btnConfirmImport = new System.Windows.Forms.Button();
+            this.txtTotalPrice = new System.Windows.Forms.TextBox();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.btnUpdateUsage = new System.Windows.Forms.Button();
+            this.nudQuantityUsed = new System.Windows.Forms.NumericUpDown();
+            this.cmbItemToUpdate = new System.Windows.Forms.ComboBox();
             this.Column6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column10 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.label4 = new System.Windows.Forms.Label();
-            this.btnConfirmImport = new System.Windows.Forms.Button();
-            this.txtTotalPrice = new System.Windows.Forms.TextBox();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.cmbItemToUpdate = new System.Windows.Forms.ComboBox();
-            this.nudQuantityUsed = new System.Windows.Forms.NumericUpDown();
-            this.btnUpdateUsage = new System.Windows.Forms.Button();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.Name = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Quantity = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.UnitPrice = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Unit = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ExpiryDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dgvInventory)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudQuantity)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAddedInventory)).BeginInit();
@@ -67,17 +67,52 @@
             // 
             this.dgvInventory.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvInventory.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Name,
+            this.ItemName,
             this.Quantity,
             this.UnitPrice,
             this.Unit,
             this.ExpiryDate});
-            this.dgvInventory.Location = new System.Drawing.Point(3, 43);
+            this.dgvInventory.Location = new System.Drawing.Point(3, 103);
             this.dgvInventory.Name = "dgvInventory";
             this.dgvInventory.RowHeadersWidth = 51;
             this.dgvInventory.RowTemplate.Height = 24;
             this.dgvInventory.Size = new System.Drawing.Size(729, 632);
             this.dgvInventory.TabIndex = 0;
+            // 
+            // ItemName
+            // 
+            this.ItemName.HeaderText = "Item Name";
+            this.ItemName.MinimumWidth = 6;
+            this.ItemName.Name = "ItemName";
+            this.ItemName.Width = 125;
+            // 
+            // Quantity
+            // 
+            this.Quantity.HeaderText = "Quantity";
+            this.Quantity.MinimumWidth = 6;
+            this.Quantity.Name = "Quantity";
+            this.Quantity.Width = 125;
+            // 
+            // UnitPrice
+            // 
+            this.UnitPrice.HeaderText = "Unit Price";
+            this.UnitPrice.MinimumWidth = 6;
+            this.UnitPrice.Name = "UnitPrice";
+            this.UnitPrice.Width = 125;
+            // 
+            // Unit
+            // 
+            this.Unit.HeaderText = "Unit";
+            this.Unit.MinimumWidth = 6;
+            this.Unit.Name = "Unit";
+            this.Unit.Width = 125;
+            // 
+            // ExpiryDate
+            // 
+            this.ExpiryDate.HeaderText = "Expiry Date";
+            this.ExpiryDate.MinimumWidth = 6;
+            this.ExpiryDate.Name = "ExpiryDate";
+            this.ExpiryDate.Width = 125;
             // 
             // cmbItem
             // 
@@ -154,41 +189,6 @@
             this.dgvAddedInventory.Size = new System.Drawing.Size(678, 273);
             this.dgvAddedInventory.TabIndex = 8;
             // 
-            // Column6
-            // 
-            this.Column6.HeaderText = "Item Name";
-            this.Column6.MinimumWidth = 6;
-            this.Column6.Name = "Column6";
-            this.Column6.Width = 125;
-            // 
-            // Column7
-            // 
-            this.Column7.HeaderText = "Quantity";
-            this.Column7.MinimumWidth = 6;
-            this.Column7.Name = "Column7";
-            this.Column7.Width = 125;
-            // 
-            // Column8
-            // 
-            this.Column8.HeaderText = "Expiry Date";
-            this.Column8.MinimumWidth = 6;
-            this.Column8.Name = "Column8";
-            this.Column8.Width = 125;
-            // 
-            // Column9
-            // 
-            this.Column9.HeaderText = "Unit Price";
-            this.Column9.MinimumWidth = 6;
-            this.Column9.Name = "Column9";
-            this.Column9.Width = 125;
-            // 
-            // Column10
-            // 
-            this.Column10.HeaderText = "Total Price";
-            this.Column10.MinimumWidth = 6;
-            this.Column10.Name = "Column10";
-            this.Column10.Width = 125;
-            // 
             // label4
             // 
             this.label4.AutoSize = true;
@@ -230,20 +230,23 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Update Usage Data";
             // 
-            // cmbItemToUpdate
+            // label6
             // 
-            this.cmbItemToUpdate.FormattingEnabled = true;
-            this.cmbItemToUpdate.Location = new System.Drawing.Point(158, 41);
-            this.cmbItemToUpdate.Name = "cmbItemToUpdate";
-            this.cmbItemToUpdate.Size = new System.Drawing.Size(121, 24);
-            this.cmbItemToUpdate.TabIndex = 0;
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(29, 101);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(91, 16);
+            this.label6.TabIndex = 4;
+            this.label6.Text = "Quantity Used";
             // 
-            // nudQuantityUsed
+            // label5
             // 
-            this.nudQuantityUsed.Location = new System.Drawing.Point(159, 95);
-            this.nudQuantityUsed.Name = "nudQuantityUsed";
-            this.nudQuantityUsed.Size = new System.Drawing.Size(120, 22);
-            this.nudQuantityUsed.TabIndex = 1;
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(29, 49);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(94, 16);
+            this.label5.TabIndex = 3;
+            this.label5.Text = "Item to Update";
             // 
             // btnUpdateUsage
             // 
@@ -255,58 +258,55 @@
             this.btnUpdateUsage.UseVisualStyleBackColor = true;
             this.btnUpdateUsage.Click += new System.EventHandler(this.btnUpdateUsage_Click);
             // 
-            // label5
+            // nudQuantityUsed
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(29, 49);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(94, 16);
-            this.label5.TabIndex = 3;
-            this.label5.Text = "Item to Update";
+            this.nudQuantityUsed.Location = new System.Drawing.Point(159, 95);
+            this.nudQuantityUsed.Name = "nudQuantityUsed";
+            this.nudQuantityUsed.Size = new System.Drawing.Size(120, 22);
+            this.nudQuantityUsed.TabIndex = 1;
             // 
-            // label6
+            // cmbItemToUpdate
             // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(29, 101);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(91, 16);
-            this.label6.TabIndex = 4;
-            this.label6.Text = "Quantity Used";
+            this.cmbItemToUpdate.FormattingEnabled = true;
+            this.cmbItemToUpdate.Location = new System.Drawing.Point(158, 41);
+            this.cmbItemToUpdate.Name = "cmbItemToUpdate";
+            this.cmbItemToUpdate.Size = new System.Drawing.Size(121, 24);
+            this.cmbItemToUpdate.TabIndex = 0;
             // 
-            // Name
+            // Column6
             // 
-            this.Name.HeaderText = "Item Name";
-            this.Name.MinimumWidth = 6;
-            this.Name.Name = "Name";
-            this.Name.Width = 125;
+            this.Column6.HeaderText = "Item Name";
+            this.Column6.MinimumWidth = 6;
+            this.Column6.Name = "Column6";
+            this.Column6.Width = 125;
             // 
-            // Quantity
+            // Column7
             // 
-            this.Quantity.HeaderText = "Quantity";
-            this.Quantity.MinimumWidth = 6;
-            this.Quantity.Name = "Quantity";
-            this.Quantity.Width = 125;
+            this.Column7.HeaderText = "Quantity";
+            this.Column7.MinimumWidth = 6;
+            this.Column7.Name = "Column7";
+            this.Column7.Width = 125;
             // 
-            // UnitPrice
+            // Column8
             // 
-            this.UnitPrice.HeaderText = "Unit Price";
-            this.UnitPrice.MinimumWidth = 6;
-            this.UnitPrice.Name = "UnitPrice";
-            this.UnitPrice.Width = 125;
+            this.Column8.HeaderText = "Unit Price";
+            this.Column8.MinimumWidth = 6;
+            this.Column8.Name = "Column8";
+            this.Column8.Width = 125;
             // 
-            // Unit
+            // Column9
             // 
-            this.Unit.HeaderText = "Unit";
-            this.Unit.MinimumWidth = 6;
-            this.Unit.Name = "Unit";
-            this.Unit.Width = 125;
+            this.Column9.HeaderText = "Expiry Date";
+            this.Column9.MinimumWidth = 6;
+            this.Column9.Name = "Column9";
+            this.Column9.Width = 125;
             // 
-            // ExpiryDate
+            // Column10
             // 
-            this.ExpiryDate.HeaderText = "Expiry Date";
-            this.ExpiryDate.MinimumWidth = 6;
-            this.ExpiryDate.Name = "ExpiryDate";
-            this.ExpiryDate.Width = 125;
+            this.Column10.HeaderText = "Total Price";
+            this.Column10.MinimumWidth = 6;
+            this.Column10.Name = "Column10";
+            this.Column10.Width = 125;
             // 
             // InventoryManagementControl
             // 
@@ -350,11 +350,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.DataGridView dgvAddedInventory;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column6;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column7;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column8;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column9;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column10;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button btnConfirmImport;
         private System.Windows.Forms.TextBox txtTotalPrice;
@@ -364,10 +359,15 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button btnUpdateUsage;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Name;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ItemName;
         private System.Windows.Forms.DataGridViewTextBoxColumn Quantity;
         private System.Windows.Forms.DataGridViewTextBoxColumn UnitPrice;
         private System.Windows.Forms.DataGridViewTextBoxColumn Unit;
         private System.Windows.Forms.DataGridViewTextBoxColumn ExpiryDate;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column6;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column7;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column8;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column9;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column10;
     }
 }
