@@ -126,14 +126,14 @@
             this.pnlTableGrid.Location = new System.Drawing.Point(150, 0);
             this.pnlTableGrid.Margin = new System.Windows.Forms.Padding(2);
             this.pnlTableGrid.Name = "pnlTableGrid";
-            this.pnlTableGrid.Size = new System.Drawing.Size(656, 630);
+            this.pnlTableGrid.Size = new System.Drawing.Size(755, 630);
             this.pnlTableGrid.TabIndex = 1;
             // 
             // pnlRightContent
             // 
             this.pnlRightContent.BackColor = System.Drawing.Color.Bisque;
             this.pnlRightContent.Dock = System.Windows.Forms.DockStyle.Right;
-            this.pnlRightContent.Location = new System.Drawing.Point(240, 0);
+            this.pnlRightContent.Location = new System.Drawing.Point(339, 0);
             this.pnlRightContent.Margin = new System.Windows.Forms.Padding(2);
             this.pnlRightContent.Name = "pnlRightContent";
             this.pnlRightContent.Size = new System.Drawing.Size(416, 630);
@@ -155,7 +155,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(806, 630);
+            this.ClientSize = new System.Drawing.Size(905, 630);
             this.Controls.Add(this.pnlTableGrid);
             this.Controls.Add(this.pnlSideBar);
             this.Margin = new System.Windows.Forms.Padding(2);

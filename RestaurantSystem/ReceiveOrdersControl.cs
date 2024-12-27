@@ -141,5 +141,10 @@ namespace RestaurantSystem
         {
 
         }
+
+        private void flpTables_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
     }
 }

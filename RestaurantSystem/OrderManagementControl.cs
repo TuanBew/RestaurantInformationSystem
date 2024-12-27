@@ -23,7 +23,46 @@ namespace RestaurantSystem
         public void LoadTableDetails(string tableID, string status)
         {
             txtTableNumber.Text = tableID;
+
+            if (status == "Reserved" || status == "Occupied")
+            {
+                try
+                {
+                    using (SqlConnection con = new SqlConnection(connectionString))
+                    {
+                        // Fetch the BookingID associated with the table
+                        string query = "SELECT TOP 1 BookingID FROM Bookings WHERE TableID = @TableID AND Status = 'Active' ORDER BY BookingTime DESC";
+                        SqlCommand cmd = new SqlCommand(query, con);
+                        cmd.Parameters.AddWithValue("@TableID", tableID);
+                        con.Open();
+
+                        object bookingIdResult = cmd.ExecuteScalar();
+                        con.Close();
+
+                        if (bookingIdResult != null)
+                        {
+                            lblBookingID.Text = $"Booking ID: {bookingIdResult.ToString()}";
+                            lblBookingID.Tag = bookingIdResult.ToString(); // Store the BookingID for reference
+                        }
+                        else
+                        {
+                            lblBookingID.Text = "No active booking found for this table.";
+                            lblBookingID.Tag = null;
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error fetching booking details: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            else
+            {
+                lblBookingID.Text = "No booking associated with this table.";
+                lblBookingID.Tag = null;
+            }
         }
+
 
         private void LoadCategories()
         {
@@ -121,7 +160,6 @@ namespace RestaurantSystem
 
         private void btnSubmitOrder_Click_1(object sender, EventArgs e)
         {
-            // Check if there are items in the order
             if (dgvOrderItems.Rows.Count == 0)
             {
                 MessageBox.Show("You must add at least one item to the order before submitting.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -131,7 +169,7 @@ namespace RestaurantSystem
             try
             {
                 string tableID;
-                string formattedTableNumber = $"Table {int.Parse(txtTableNumber.Text):00}"; // Format "3" to "Table 03"
+                string formattedTableNumber = $"Table {int.Parse(txtTableNumber.Text):00}";
 
                 using (SqlConnection con = new SqlConnection(connectionString))
                 {
@@ -150,26 +188,30 @@ namespace RestaurantSystem
                         return;
                     }
 
-                    tableID = result.ToString(); // Assign the correct TableID
+                    tableID = result.ToString();
+
+                    // Get the BookingID if it exists
+                    int? bookingID = lblBookingID.Tag != null ? (int?)Convert.ToInt32(lblBookingID.Tag) : null;
 
                     // Insert a new order into the Orders table
                     string insertOrderQuery = @"
-                INSERT INTO Orders (TableID, OrderDateTime, OrderStatus)
-                VALUES (@TableID, @OrderDateTime, 'Pending');
+                INSERT INTO Orders (TableID, OrderDateTime, OrderStatus, BookingID)
+                VALUES (@TableID, @OrderDateTime, 'Pending', @BookingID);
                 SELECT SCOPE_IDENTITY();"; // Get the newly created OrderID
 
                     SqlCommand insertOrderCmd = new SqlCommand(insertOrderQuery, con);
                     insertOrderCmd.Parameters.AddWithValue("@TableID", tableID);
                     insertOrderCmd.Parameters.AddWithValue("@OrderDateTime", DateTime.Now);
+                    insertOrderCmd.Parameters.AddWithValue("@BookingID", (object)bookingID ?? DBNull.Value);
 
                     con.Open();
-                    int orderId = Convert.ToInt32(insertOrderCmd.ExecuteScalar()); // Get the OrderID
+                    int orderId = Convert.ToInt32(insertOrderCmd.ExecuteScalar());
                     con.Close();
 
                     // Insert each order item into the OrderDetails table
                     foreach (DataGridViewRow row in dgvOrderItems.Rows)
                     {
-                        if (row.Cells[0].Value == null) continue; // Skip empty rows
+                        if (row.Cells[0].Value == null) continue;
 
                         string insertOrderDetailQuery = @"
                     INSERT INTO OrderDetails (OrderID, MenuItemID, Quantity, Price)
@@ -188,7 +230,7 @@ namespace RestaurantSystem
                         con.Close();
                     }
 
-                    // Update the table status in the Tables table to "Occupied"
+                    // Update the table status
                     string updateTableQuery = "UPDATE Tables SET Status = 'Occupied' WHERE TableID = @TableID";
                     SqlCommand updateTableCmd = new SqlCommand(updateTableQuery, con);
                     updateTableCmd.Parameters.AddWithValue("@TableID", tableID);
@@ -198,16 +240,12 @@ namespace RestaurantSystem
                     con.Close();
                 }
 
-                MessageBox.Show("Order submitted successfully! The table is now occupied.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Order submitted successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                // Refresh the table grid in the WaiterDashboard
+                // Refresh tables and clear form
                 var dashboard = (WaiterDashboard)this.ParentForm;
-                dashboard.LoadTableGrid(); // Reload the tables to reflect the updated status
-
-                // Clear the order form
+                dashboard.LoadTableGrid();
                 ClearForm();
-
-                // Disable the Submit Order button
                 btnSubmitOrder.Enabled = false;
             }
             catch (Exception ex)
@@ -217,5 +255,29 @@ namespace RestaurantSystem
         }
 
 
+        private void label5_Click(object sender, EventArgs e)
+        {
+            string tableID = txtTableNumber.Text; // Assuming you have this control for the table number
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                string query = "SELECT BookingID FROM Bookings WHERE TableID = @TableID AND Status = 'Active'";
+                SqlCommand cmd = new SqlCommand(query, con);
+                cmd.Parameters.AddWithValue("@TableID", tableID);
+                con.Open();
+
+                object result = cmd.ExecuteScalar();
+                if (result != null)
+                {
+                    lblBookingID.Text = "Booking ID: " + result.ToString();
+                }
+                else
+                {
+                    lblBookingID.Text = "No active booking found.";
+                }
+
+                con.Close();
+            }
+        }
     }
 }

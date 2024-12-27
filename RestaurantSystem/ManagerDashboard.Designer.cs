@@ -31,14 +31,13 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ManagerDashboard));
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.pnlSideBar = new System.Windows.Forms.Panel();
+            this.employee_button = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.btnLogout = new System.Windows.Forms.Button();
             this.btnOrder = new System.Windows.Forms.Button();
             this.btnBookTable = new System.Windows.Forms.Button();
             this.pnlRightContent = new System.Windows.Forms.Panel();
             this.flpTables = new System.Windows.Forms.FlowLayoutPanel();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.pnlSideBar.SuspendLayout();
             this.SuspendLayout();
@@ -58,8 +57,7 @@
             // pnlSideBar
             // 
             this.pnlSideBar.BackColor = System.Drawing.Color.Tan;
-            this.pnlSideBar.Controls.Add(this.button2);
-            this.pnlSideBar.Controls.Add(this.button1);
+            this.pnlSideBar.Controls.Add(this.employee_button);
             this.pnlSideBar.Controls.Add(this.label1);
             this.pnlSideBar.Controls.Add(this.btnLogout);
             this.pnlSideBar.Controls.Add(this.btnOrder);
@@ -71,6 +69,18 @@
             this.pnlSideBar.Name = "pnlSideBar";
             this.pnlSideBar.Size = new System.Drawing.Size(150, 630);
             this.pnlSideBar.TabIndex = 2;
+            // 
+            // employee_button
+            // 
+            this.employee_button.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.employee_button.Location = new System.Drawing.Point(0, 233);
+            this.employee_button.Margin = new System.Windows.Forms.Padding(2);
+            this.employee_button.Name = "employee_button";
+            this.employee_button.Size = new System.Drawing.Size(150, 41);
+            this.employee_button.TabIndex = 5;
+            this.employee_button.Text = "Employee";
+            this.employee_button.UseVisualStyleBackColor = true;
+            this.employee_button.Click += new System.EventHandler(this.button1_Click);
             // 
             // label1
             // 
@@ -115,16 +125,18 @@
             this.btnBookTable.TabIndex = 1;
             this.btnBookTable.Text = "Payment";
             this.btnBookTable.UseVisualStyleBackColor = true;
+            this.btnBookTable.Click += new System.EventHandler(this.btnBookTable_Click);
             // 
             // pnlRightContent
             // 
             this.pnlRightContent.BackColor = System.Drawing.Color.Bisque;
             this.pnlRightContent.Dock = System.Windows.Forms.DockStyle.Right;
-            this.pnlRightContent.Location = new System.Drawing.Point(489, 0);
+            this.pnlRightContent.Location = new System.Drawing.Point(488, 0);
             this.pnlRightContent.Margin = new System.Windows.Forms.Padding(2);
             this.pnlRightContent.Name = "pnlRightContent";
-            this.pnlRightContent.Size = new System.Drawing.Size(416, 630);
+            this.pnlRightContent.Size = new System.Drawing.Size(1020, 630);
             this.pnlRightContent.TabIndex = 3;
+            this.pnlRightContent.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlRightContent_Paint);
             // 
             // flpTables
             // 
@@ -135,36 +147,14 @@
             this.flpTables.Name = "flpTables";
             this.flpTables.Size = new System.Drawing.Size(340, 630);
             this.flpTables.TabIndex = 4;
-            // 
-            // button1
-            // 
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Location = new System.Drawing.Point(0, 196);
-            this.button1.Margin = new System.Windows.Forms.Padding(2);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(150, 41);
-            this.button1.TabIndex = 5;
-            this.button1.Text = "Employee";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // button2
-            // 
-            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button2.Location = new System.Drawing.Point(0, 265);
-            this.button2.Margin = new System.Windows.Forms.Padding(2);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(150, 41);
-            this.button2.TabIndex = 6;
-            this.button2.Text = "Employee";
-            this.button2.UseVisualStyleBackColor = true;
+            this.flpTables.Paint += new System.Windows.Forms.PaintEventHandler(this.flpTables_Paint);
             // 
             // ManagerDashboard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Bisque;
-            this.ClientSize = new System.Drawing.Size(905, 630);
+            this.ClientSize = new System.Drawing.Size(1508, 630);
             this.Controls.Add(this.flpTables);
             this.Controls.Add(this.pnlSideBar);
             this.Controls.Add(this.pnlRightContent);
@@ -187,7 +177,6 @@
         private System.Windows.Forms.Button btnBookTable;
         private System.Windows.Forms.Panel pnlRightContent;
         private System.Windows.Forms.FlowLayoutPanel flpTables;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button employee_button;
     }
 }
